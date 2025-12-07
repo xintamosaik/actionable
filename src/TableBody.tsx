@@ -18,7 +18,7 @@ const Priority = (value: Value, urgency: Value): number => {
 
 function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
     return (
-        <tr style={{ borderBottom: '1px solid #ccc' }}>
+        <tr>
             <td>
                 <EditableTextCell
                     value={item.task}

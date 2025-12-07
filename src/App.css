@@ -2,8 +2,18 @@
 table tbody tr td, 
 table thead tr th {
   text-align: left;
-  padding-right: 1rem;
+  padding: 2ch 1ch;
+
 }
+table thead tr th:first-child,
+table tbody tr td:first-child {
+  padding-left: 0;
+}
+
+table thead tr th:last-child,
+table tbody tr td:last-child {
+  padding-right: 0;
+} 
 button {
   cursor: pointer;
   min-width: 50px;
