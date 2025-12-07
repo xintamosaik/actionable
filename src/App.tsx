@@ -1,22 +1,15 @@
 import './App.css'
 import React from 'react'
 import useLocalStorage from './Localstore.ts'
-import type { TodoItem } from './types.ts'
+import type { TodoItem, State } from './types.ts'
 
 import TaskAddForm from './TaskAddForm.tsx'
 import TodoTable from './TodoTable.tsx'
-function filterTodos(todos: TodoItem[], filter: 'ALL' | 'IN_PROGRESS' | 'WAITING' | 'DONE'): TodoItem[] {
-  switch (filter) {
-    case 'IN_PROGRESS':
-      return todos.filter((todo) => todo.state === 'IN_PROGRESS')
-    case 'WAITING':
-      return todos.filter((todo) => todo.state === 'WAITING')
-    case 'DONE':
-      return todos.filter((todo) => todo.state === 'DONE')
-    case 'ALL':
-    default:
-      return todos
-  }
+type Filter = 'ALL' | State
+
+function filterTodos(todos: TodoItem[], filter: Filter): TodoItem[] {
+  if (filter === 'ALL') return todos
+  return todos.filter(todo => todo.state === filter)
 }
 function App() {
 
