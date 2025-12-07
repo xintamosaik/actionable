@@ -1,29 +1,29 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { Effort } from './types.ts'
 import colors from './colors.ts';
-function EffortCell({
-    effort,
-    onChange,
-}: {
-    effort: Effort;
-    onChange: (e: Effort) => void;
-}) {
+
+type EffortCellProps = {
+    effort: Effort
+    onChange: (effort: Effort) => void
+}
+
+function EffortCell({ effort, onChange }: EffortCellProps) {
     const options: Effort[] = ['MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS'];
-    const optionStyles = {
+    const optionStyles: Record<Effort, CSSProperties> = {
         MINUTES: { backgroundColor: colors.min },
         HOURS: { backgroundColor: colors.low },
         DAYS: { backgroundColor: colors.normal },
         WEEKS: { backgroundColor: colors.high },
-        MONTHS: { backgroundColor:  colors.max },
+        MONTHS: { backgroundColor: colors.max },
     }
     const [open, setOpen] = useState(false);
 
     if (!open) {
         return (
-            <button 
-                type="button" 
+            <button
+                type="button"
                 onClick={() => setOpen(true)}
-                style= {optionStyles[effort]}
+                style={optionStyles[effort]}
             >
                 {effort}
             </button>

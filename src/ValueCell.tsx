@@ -1,4 +1,5 @@
 import {useState} from "react";
+import type { CSSProperties } from "react";
 import type { Value } from './types.ts'
 import colors from "./colors.ts";
 function ValueCell({
@@ -17,7 +18,7 @@ function ValueCell({
         4: 'High',
         5: 'MAX',
     };
-    const optionStyles = {
+    const optionStyles: Record<Value, CSSProperties> = {
         1: { backgroundColor: colors.min },
         2: { backgroundColor: colors.low },
         3: { backgroundColor: colors.normal },
