@@ -14,7 +14,7 @@ function filterTodos(todos: TodoItem[], filter: Filter): TodoItem[] {
 function App() {
 
   const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
-  const [filter, setFilter] = React.useState<Filter>('ALL');
+  const [filter, setFilter] = React.useState<Filter>('IN_PROGRESS');
 
   const updateTodo = React.useCallback(
     (id: string, patch: Partial<TodoItem>) => {
