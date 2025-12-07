@@ -2,6 +2,7 @@ import ValueCell from './ValueCell.tsx'
 import EffortCell from './EffortCell.tsx'
 import EditableTextCell from './EditableTextCell.tsx'
 import type { TodoItem, Value } from './types.ts'
+import StateCell from './StateCell.tsx'
 
 const Priority = (value: Value, urgency: Value): number => {
     const valueNumeric = Number(value);
@@ -26,7 +27,10 @@ function TodoRow({
                 />
             </td>
             <td>
-                {item.state}
+                <StateCell
+                    state={item.state}
+                    onChange={(newState) => onUpdateTodo(item.id, { state: newState })}
+                />
             </td>
             <td>{Priority(item.value, item.urgency)}%</td>
 
