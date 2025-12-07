@@ -7,28 +7,24 @@ table thead tr th {
 button {
   cursor: pointer;
   min-width: 50px;
-  margin: 4px 0;
-  padding: 8px;
+  margin: 1ch 0;
+  padding: 1ch;
   border: none;
   border-radius: 5px;
   color: white;
-  font-weight: bold;
+  font-weight: 900;
 }
 
 button.primary {
   background-color: #007bff;
 }
 
-button.primary:hover {
-  background-color: #0056b3;
+button:hover {
+  filter: brightness(120%);
 }
 
 button.secondary {
   background-color: #22425f;
-}
-
-button.secondary:hover {
-  background-color: #1a2d3e;
 }
 
 button.secondary.active {
