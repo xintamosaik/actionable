@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import type { FormEvent } from 'react';
+import { useState, type FormEvent, type KeyboardEvent } from 'react';
 import type { TodoItem } from './types.ts'
 
 function TaskAddForm({ onAdd }: { onAdd: (todo: TodoItem) => void }) {
     const [adding, setAdding] = useState(false);
     const [taskInput, setTaskInput] = useState('');
 
-    function handleSubmit(event: FormEvent) {
+    function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const trimmed = taskInput.trim();
         if (!trimmed) return;
@@ -32,7 +31,7 @@ function TaskAddForm({ onAdd }: { onAdd: (todo: TodoItem) => void }) {
         setAdding(true);
     }
 
-    function handleEscape(event: React.KeyboardEvent) {
+    function handleEscape(event: KeyboardEvent<HTMLFormElement>) {
         if (event.key === 'Escape') {
             setAdding(false);
         }
