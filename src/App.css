@@ -26,10 +26,15 @@ button:hover {
 button.secondary {
   background-color: #22425f;
 }
+button.secondary.inactive {
+  border: 2px solid transparent;
+}
 
 button.secondary.active {
-  color: yellow
+  color: yellow;
+  border: 2px solid yellow;
 }
+
 
 div.popup {
   position: absolute;

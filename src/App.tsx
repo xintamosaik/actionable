@@ -51,7 +51,7 @@ function App() {
           <button
             key={id}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5ch' }}
-            className={filter === id ? 'secondary active' : 'secondary'}
+            className={filter === id ? 'secondary active' : 'secondary inactive'}
             onClick={() => setFilter(id)}
             aria-pressed={filter === id}
           >
