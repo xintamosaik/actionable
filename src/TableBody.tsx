@@ -1,10 +1,7 @@
 import ValueCell from './ValueCell.tsx'
 import EffortCell from './EffortCell.tsx'
-import EditableTextCell from './EditableTextCell.tsx';
+import EditableTextCell from './EditableTextCell.tsx'
 import type { TodoItem, Value } from './types.ts'
-
-
-
 
 const Priority = (value: Value, urgency: Value): number => {
     const valueNumeric = Number(value);
@@ -25,11 +22,11 @@ function TodoRow({
             <td>
                 <EditableTextCell
                     value={item.task}
-                    onChange={(newName) => onUpdateTodo(item.id, { task: newName })}
+                    onChange={(newName: string) => onUpdateTodo(item.id, { task: newName })}
                 />
             </td>
             <td>
-               {item.state}
+                {item.state}
             </td>
             <td>{Priority(item.value, item.urgency)}%</td>
 
@@ -56,13 +53,13 @@ function TodoRow({
             <td>
                 <EditableTextCell
                     value={item.responsible}
-                    onChange={(newName) => onUpdateTodo(item.id, { responsible: newName })}
+                    onChange={(newName: string) => onUpdateTodo(item.id, { responsible: newName })}
                 />
             </td>
             <td>
                 <EditableTextCell
                     value={item.collaboration ? item.collaboration : ''}
-                    onChange={(newName) => onUpdateTodo(item.id, { collaboration: newName })}
+                    onChange={(newName: string) => onUpdateTodo(item.id, { collaboration: newName })}
                 />
 
             </td>
