@@ -1,10 +1,8 @@
 import ValueCell from './ValueCell.tsx'
 import EffortCell from './EffortCell.tsx'
-import NameCell from './NameCell.tsx';
-import OwnerCell from './OwnerCell.tsx';
-
+import EditableTextCell from './EditableTextCell.tsx';
 import type { TodoItem, Value } from './types.ts'
-import CollaborationCell from './CollaborationCell.tsx';
+
 
 
 
@@ -25,10 +23,10 @@ function TodoRow({
     return (
         <tr className={item.state === 'DONE' ? 'row-done' : ''} style={{ borderBottom: '1px solid #ccc' }}>
             <td>
-                <NameCell
-                    name={item.task}
+                <EditableTextCell
+                    value={item.task}
                     onChange={(newName) => onUpdateTodo(item.id, { task: newName })}
-                ></NameCell>
+                />
             </td>
             <td>{Priority(item.value, item.urgency)}%</td>
 
@@ -53,16 +51,16 @@ function TodoRow({
                 />
             </td>
             <td>
-                <OwnerCell
-                    owner={item.responsible}
+                <EditableTextCell
+                    value={item.responsible}
                     onChange={(newName) => onUpdateTodo(item.id, { responsible: newName })}
-                ></OwnerCell>
+                />
             </td>
             <td>
-                <CollaborationCell
-                    collaborator={item.collaboration ? item.collaboration : ''}
+                <EditableTextCell
+                    value={item.collaboration ? item.collaboration : ''}
                     onChange={(newName) => onUpdateTodo(item.id, { collaboration: newName })}
-                ></CollaborationCell>
+                />
 
             </td>
 
