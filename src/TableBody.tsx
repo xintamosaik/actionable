@@ -19,7 +19,7 @@ function TodoRow({
     onUpdateTodo: (id: string, patch: Partial<TodoItem>) => void;
 }) {
     return (
-        <tr className={item.state === 'DONE' ? 'row-done' : ''} style={{ borderBottom: '1px solid #ccc' }}>
+        <tr style={{ borderBottom: '1px solid #ccc' }}>
             <td>
                 <EditableTextCell
                     value={item.task}
