@@ -51,7 +51,7 @@ function TaskAddForm({ onAdd }: { onAdd: (todo: TodoItem) => void }) {
             <button type="button" onClick={() => setAdding(false)}>Cancel</button>
         </form>
     ) : (
-        <button type="button" onClick={onAddTask}>+ Add Task</button>
+        <button type="button" className="primary" onClick={onAddTask}>+ Add Task</button>
     );
 }
 
