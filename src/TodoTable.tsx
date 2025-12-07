@@ -1,4 +1,4 @@
-import React from 'react'
+import {useState, useMemo} from 'react'
 import TableHeader from './TableHeader.tsx'
 import TableBody from './TableBody.tsx'
 
@@ -15,9 +15,9 @@ function TodoTable({
     todos: TodoItem[];
     onUpdateTodo: (id: string, patch: Partial<TodoItem>) => void;
 }) {
-    const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('desc');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-    const sortedTodos = React.useMemo(() => {
+    const sortedTodos = useMemo(() => {
         const copy = [...todos];
         copy.sort((a, b) => {
             const va = Number(a.value);

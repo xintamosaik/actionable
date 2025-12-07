@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import type { Value } from './types.ts'
 import colors from "./colors.ts";
 function ValueCell({
@@ -24,7 +24,7 @@ function ValueCell({
         4: { backgroundColor: colors.high },
         5: { backgroundColor: colors.max },
     }
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     if (!open) {
         return (

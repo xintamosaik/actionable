@@ -1,11 +1,12 @@
-import React from 'react';
+import {useState} from 'react';
+import type { FormEvent } from 'react';
 import type { TodoItem } from './types.ts'
 
 function TaskAddForm({ onAdd }: { onAdd: (todo: TodoItem) => void }) {
-    const [adding, setAdding] = React.useState(false);
-    const [taskInput, setTaskInput] = React.useState('');
+    const [adding, setAdding] = useState(false);
+    const [taskInput, setTaskInput] = useState('');
 
-    function handleSubmit(event: React.FormEvent) {
+    function handleSubmit(event: FormEvent) {
         event.preventDefault();
         const trimmed = taskInput.trim();
         if (!trimmed) return;

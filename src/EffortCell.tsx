@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import type { Effort } from './types.ts'
 import colors from './colors.ts';
 function EffortCell({
@@ -16,7 +16,7 @@ function EffortCell({
         WEEKS: { backgroundColor: colors.high },
         MONTHS: { backgroundColor:  colors.max },
     }
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     if (!open) {
         return (

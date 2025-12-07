@@ -1,5 +1,5 @@
 import './App.css'
-import React from 'react'
+import {useState, useCallback} from 'react'
 import useLocalStorage from './Localstore.ts'
 import type { TodoItem, State } from './types.ts'
 
@@ -14,9 +14,9 @@ function filterTodos(todos: TodoItem[], filter: Filter): TodoItem[] {
 function App() {
 
   const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
-  const [filter, setFilter] = React.useState<Filter>('IN_PROGRESS');
+  const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
 
-  const updateTodo = React.useCallback(
+  const updateTodo = useCallback(
     (id: string, patch: Partial<TodoItem>) => {
       setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, ...patch } : todo)));
     },
