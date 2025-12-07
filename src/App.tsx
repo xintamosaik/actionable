@@ -1,5 +1,5 @@
 import './App.css'
-import {useState, useCallback} from 'react'
+import { useState, useCallback } from 'react'
 import useLocalStorage from './Localstore.ts'
 import type { TodoItem, State } from './types.ts'
 
@@ -12,7 +12,12 @@ function filterTodos(todos: TodoItem[], filter: Filter): TodoItem[] {
   return todos.filter(todo => todo.state === filter)
 }
 function App() {
-
+  const FILTERS: { id: Filter; label: string }[] = [
+    { id: 'IN_PROGRESS', label: 'In progress' },
+    { id: 'WAITING', label: 'Waiting' },
+    { id: 'DONE', label: 'Done' },
+    { id: 'ALL', label: 'All' },
+  ]
   const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
   const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
 
@@ -28,24 +33,22 @@ function App() {
     <>
       <div style={{ display: 'flex', gap: '1ch', marginBottom: '1em' }}>
         <TaskAddForm onAdd={(todo) => setTodos((prev) => [...prev, todo])} />
-        <button className={filter === 'IN_PROGRESS' ? 'secondary active' : 'secondary'} onClick={() => setFilter('IN_PROGRESS')}>
-          In progress
-        </button>
-        <button className={filter === 'WAITING' ? 'secondary active' : 'secondary'} onClick={() => setFilter('WAITING')}>
-          Waiting
-        </button>
-        <button className={filter === 'DONE' ? 'secondary active' : 'secondary'} onClick={() => setFilter('DONE')}>
-          Done
-        </button>
-        <button className={filter === 'ALL' ? 'secondary active' : 'secondary'} onClick={() => setFilter('ALL')}>
-          All
-        </button>
+        {FILTERS.map(({ id, label }) => (
+          <button
+            key={id}
+            className={filter === id ? 'secondary active' : 'secondary'}
+            onClick={() => setFilter(id)}
+            aria-pressed={filter === id}
+          >
+            {label}
+          </button>
+        ))}
       </div>
-
       <div>
         <TodoTable todos={filteredTodos} onUpdateTodo={updateTodo} />
       </div>
 
+  
     </>
   );
 }
