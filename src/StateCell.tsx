@@ -1,12 +1,22 @@
 import {useState } from 'react';
 import type { State } from './types.ts'
+import colors from './colors.ts';
 type StateCellProps = {
   state: State
   onChange: (state: State) => void
 }
 function StateCell({ state, onChange }: StateCellProps) {
     const options: State[] =  ['WAITING', 'IN_PROGRESS', 'DONE', ];
-  
+    const optionStyles = {
+        WAITING: { backgroundColor: colors.high },
+        IN_PROGRESS: { backgroundColor: colors.normal },
+        DONE: { backgroundColor: colors.low },
+    }
+    const optionLabels = {
+        WAITING: 'Waiting',
+        IN_PROGRESS: 'In Progress',
+        DONE: 'Done',
+    }
     const [open, setOpen] = useState(false);
 
     if (!open) {
@@ -14,9 +24,9 @@ function StateCell({ state, onChange }: StateCellProps) {
             <button 
                 type="button" 
                 onClick={() => setOpen(true)}
-        
+                style= {optionStyles[state]}
             >
-                {state}
+                {optionLabels[state]}
             </button>
         );
     }
@@ -27,13 +37,13 @@ function StateCell({ state, onChange }: StateCellProps) {
                 <button
                     key={opt}
                     type="button"
-           
+                    style={optionStyles[opt]}
                     onClick={() => {
                         onChange(opt);
                         setOpen(false);
                     }}
                 >
-                    {opt}
+                    {optionLabels[opt]}
                 </button>
             ))}
         </dialog>
