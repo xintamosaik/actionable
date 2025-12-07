@@ -28,16 +28,16 @@ function App() {
     <>
       <div style={{ display: 'flex', gap: '1ch', marginBottom: '1em' }}>
         <TaskAddForm onAdd={(todo) => setTodos((prev) => [...prev, todo])} />
-        <button onClick={() => setFilter('IN_PROGRESS')}>
+        <button className={filter === 'IN_PROGRESS' ? 'secondary active' : 'secondary'} onClick={() => setFilter('IN_PROGRESS')}>
           In progress
         </button>
-        <button onClick={() => setFilter('WAITING')}>
+        <button className={filter === 'WAITING' ? 'secondary active' : 'secondary'} onClick={() => setFilter('WAITING')}>
           Waiting
         </button>
-        <button onClick={() => setFilter('DONE')}>
+        <button className={filter === 'DONE' ? 'secondary active' : 'secondary'} onClick={() => setFilter('DONE')}>
           Done
         </button>
-        <button onClick={() => setFilter('ALL')}>
+        <button className={filter === 'ALL' ? 'secondary active' : 'secondary'} onClick={() => setFilter('ALL')}>
           All
         </button>
       </div>

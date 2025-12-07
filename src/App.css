@@ -22,6 +22,20 @@ button.primary {
 button.primary:hover {
   background-color: #0056b3;
 }
+
+button.secondary {
+  background-color: #22425f;
+}
+
+button.secondary:hover {
+  background-color: #1a2d3e;
+}
+
+button.secondary.active {
+  color: yellow
+}
+
+
 .row-done {
   color: grey;
 }
