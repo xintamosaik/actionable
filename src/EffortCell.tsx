@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Effort } from './types.ts'
-import state from './colors.ts';
+import colors from './colors.ts';
 function EffortCell({
     effort,
     onChange,
@@ -10,11 +10,11 @@ function EffortCell({
 }) {
     const options: Effort[] = ['MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS'];
     const optionStyles = {
-        MINUTES: { backgroundColor: state.blue },
-        HOURS: { backgroundColor: state.green },
-        DAYS: { backgroundColor: state.yellow },
-        WEEKS: { backgroundColor: state.orange },
-        MONTHS: { backgroundColor:  state.red },
+        MINUTES: { backgroundColor: colors.min },
+        HOURS: { backgroundColor: colors.low },
+        DAYS: { backgroundColor: colors.normal },
+        WEEKS: { backgroundColor: colors.high },
+        MONTHS: { backgroundColor:  colors.max },
     }
     const [open, setOpen] = React.useState(false);
 

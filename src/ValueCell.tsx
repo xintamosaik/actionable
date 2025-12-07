@@ -1,6 +1,6 @@
 import React from "react";
 import type { Value } from './types.ts'
-import state from "./colors.ts";
+import colors from "./colors.ts";
 function ValueCell({
     value,
     onChange,
@@ -18,11 +18,11 @@ function ValueCell({
         5: 'MAX',
     };
     const optionStyles = {
-        1: { backgroundColor: state.blue },
-        2: { backgroundColor: state.green },
-        3: { backgroundColor: state.yellow },
-        4: { backgroundColor: state.orange },
-        5: { backgroundColor: state.red },
+        1: { backgroundColor: colors.min },
+        2: { backgroundColor: colors.low },
+        3: { backgroundColor: colors.normal },
+        4: { backgroundColor: colors.high },
+        5: { backgroundColor: colors.max },
     }
     const [open, setOpen] = React.useState(false);
 

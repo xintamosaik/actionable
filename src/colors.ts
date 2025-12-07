@@ -5,12 +5,12 @@ const yellow = '#91700fff';
 const orange = '#8a4a15ff';
 const red = '#740d17ff';
 
-const state = {
-    blue: blue,
-    green: green,
-    yellow: yellow,
-    orange: orange,
-    red: red,
+const colors = {
+    min: blue,
+    low: green,
+    normal: yellow,
+    high: orange,
+    max: red,
 }
 
-export default state;
+export default colors;
