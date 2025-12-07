@@ -16,11 +16,25 @@ function filterTodos(todos: TodoItem[], filter: Filter): TodoItem[] {
   if (filter === 'ALL') return todos
   return todos.filter(todo => todo.state === filter)
 }
+function countByFilter(todos: TodoItem[]): Record<Filter, number> {
+  const counts: Record<Filter, number> = {
+    ALL: todos.length,
+    IN_PROGRESS: 0,
+    WAITING: 0,
+    DONE: 0,
+  }
+
+  for (const todo of todos) {
+    counts[todo.state] += 1
+  }
+
+  return counts
+}
 function App() {
   
   const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
   const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
-
+  const counts = countByFilter(todos)
   const updateTodo = useCallback(
     (id: string, patch: Partial<TodoItem>) => {
       setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, ...patch } : todo)));
@@ -36,11 +50,14 @@ function App() {
         {FILTERS.map(({ id, label }) => (
           <button
             key={id}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5ch' }}
             className={filter === id ? 'secondary active' : 'secondary'}
             onClick={() => setFilter(id)}
             aria-pressed={filter === id}
           >
-            {label}
+            {label} 
+            <span style={{padding: "1ch", backgroundColor: "Canvas", borderRadius: "42%"}}>{counts[id]}</span>
+            
           </button>
         ))}
       </div>
