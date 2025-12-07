@@ -1,6 +1,7 @@
 function TableHeader({ sortDirection, onToggleSort }: { sortDirection?: 'asc' | 'desc'; onToggleSort?: () => void; }) {
     const headers = [
         'Task',
+        'State',
         'Priority',
         'Value',
         'Urgency',

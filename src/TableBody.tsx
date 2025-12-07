@@ -28,6 +28,9 @@ function TodoRow({
                     onChange={(newName) => onUpdateTodo(item.id, { task: newName })}
                 />
             </td>
+            <td>
+               {item.state}
+            </td>
             <td>{Priority(item.value, item.urgency)}%</td>
 
             <td>
