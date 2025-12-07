@@ -25,7 +25,13 @@ function EditableTextCell({ value, placeholder = '-', onChange }: EditableTextCe
 
   if (!open) {
     return (
-      <button type="button" className="secondary" onClick={() => setOpen(true)}>
+      <button 
+        type="button" 
+        className="secondary" 
+        onClick={() => {
+          setOpen(true)
+          setDraft(value)
+        }}>
         {value || placeholder}
       </button>
     )
