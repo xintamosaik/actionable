@@ -1,8 +1,10 @@
+import type { TodoItem, Value } from './types.ts'
 import ValueCell from './ValueCell.tsx'
 import EffortCell from './EffortCell.tsx'
 import EditableTextCell from './EditableTextCell.tsx'
-import type { TodoItem, Value } from './types.ts'
+import DueCell from './DueCell.tsx'
 import StateCell from './StateCell.tsx'
+
 
 const Priority = (value: Value, urgency: Value): number => {
     const valueNumeric = Number(value);
@@ -68,7 +70,12 @@ function TodoRow({
 
             </td>
 
-            <td>{item.duedate ? item.duedate : ''}</td>
+            <td>
+                <DueCell
+                    date={item.duedate ? item.duedate : ''}
+                    onChange={(newDate: string) => onUpdateTodo(item.id, { duedate: newDate })}
+                ></DueCell>
+            </td>
 
             <td>
                 <EditableTextCell
