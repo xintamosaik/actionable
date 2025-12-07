@@ -1,13 +1,10 @@
 import {useState } from 'react';
 import type { State } from './types.ts'
-
-function StateCell({
-    state: state,
-    onChange,
-}: {
-    state: State;
-    onChange: (e: State) => void;
-}) {
+type StateCellProps = {
+  state: State
+  onChange: (state: State) => void
+}
+function StateCell({ state, onChange }: StateCellProps) {
     const options: State[] =  ['WAITING', 'IN_PROGRESS', 'DONE', ];
   
     const [open, setOpen] = useState(false);
