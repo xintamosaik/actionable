@@ -69,7 +69,14 @@ function TodoRow({
             </td>
 
             <td>{item.duedate ? item.duedate : ''}</td>
-            <td>{item.notes ? item.notes : ''}</td>
+
+            <td>
+                <EditableTextCell
+                    value={item.notes ? item.notes : ''}
+                    onChange={(newName: string) => onUpdateTodo(item.id, { notes: newName })}
+                />
+
+            </td>
         </tr>
     );
 }
