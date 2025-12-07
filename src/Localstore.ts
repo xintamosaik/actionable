@@ -3,13 +3,16 @@ import { useEffect, useState } from 'react'
 
 function useLocalStorage<T>(key: string, initialValue: T) {
     const [value, setValue] = useState<T>(() => {
-        if (typeof window === 'undefined') return initialValue
+        const defaultValue = typeof initialValue === 'function'
+            ? (initialValue as () => T)()
+            : initialValue
+        if (typeof window === 'undefined') return defaultValue
         try {
             const item = window.localStorage.getItem(key)
-            return item ? (JSON.parse(item) as T) : initialValue
+            return item ? (JSON.parse(item) as T) : defaultValue
         } catch {
             console.warn('Could not read from localStorage')
-            return initialValue
+            return defaultValue
         }
     })
 
