@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import type { CSSProperties } from "react";
 import type { Value } from './types.ts'
 import colors from "./colors.ts";
@@ -40,21 +40,23 @@ function ValueCell({
     }
 
     return (
-        <dialog style={{ display: 'flex', flexDirection: 'column', }}>
-            {options.map((opt) => (
-                <button
-                    key={opt}
-                    type="button"
-                    style={optionStyles[opt]}
-                    onClick={() => {
-                        onChange(opt);
-                        setOpen(false);
-                    }}
-                >
-                    {optionLabels[opt]}
-                </button>
-            ))}
-        </dialog>
+        <div style={{ position: 'relative' }}>
+            <div className="popup" style={{ display: 'flex', flexDirection: 'column', }}>
+                {options.map((opt) => (
+                    <button
+                        key={opt}
+                        type="button"
+                        style={optionStyles[opt]}
+                        onClick={() => {
+                            onChange(opt);
+                            setOpen(false);
+                        }}
+                    >
+                        {optionLabels[opt]}
+                    </button>
+                ))}
+            </div>
+        </div>
     );
 }
 

@@ -18,34 +18,39 @@ function EffortCell({ effort, onChange }: EffortCellProps) {
     }
     const [open, setOpen] = useState(false);
 
+    const button = (
+        <button
+            type="button"
+            onClick={() => setOpen(true)}
+            style={optionStyles[effort]}
+        >
+            {effort}
+        </button>
+    );
+
     if (!open) {
-        return (
-            <button
-                type="button"
-                onClick={() => setOpen(true)}
-                style={optionStyles[effort]}
-            >
-                {effort}
-            </button>
-        );
+        return button;
     }
 
     return (
-        <dialog style={{ display: 'flex', flexDirection: 'column', }}>
-            {options.map((opt) => (
-                <button
-                    key={opt}
-                    type="button"
-                    style={optionStyles[opt]}
-                    onClick={() => {
-                        onChange(opt);
-                        setOpen(false);
-                    }}
-                >
-                    {opt}
-                </button>
-            ))}
-        </dialog>
+        <div style={{ position: 'relative' }}>
+            {button}
+            <div className="popup" style={{ display: 'flex', flexDirection: 'column'  }}>
+                {options.map((opt) => (
+                    <button
+                        key={opt}
+                        type="button"
+                        style={optionStyles[opt]}
+                        onClick={() => {
+                            onChange(opt);
+                            setOpen(false);
+                        }}
+                    >
+                        {opt}
+                    </button>
+                ))}
+            </div>
+        </div>
     );
 }
 
