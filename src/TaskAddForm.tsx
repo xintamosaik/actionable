@@ -38,16 +38,18 @@ function TaskAddForm({ onAdd }: { onAdd: (todo: TodoItem) => void }) {
     }
 
     return adding ? (
-        <form onSubmit={handleSubmit} onKeyUp={handleEscape}>
-            <label htmlFor="task">Task</label>
+        <form onSubmit={handleSubmit} onKeyUp={handleEscape} style={{ display: 'inline-flex', gap: '1ch', alignItems: 'center' }}>
+            <label htmlFor="task">Name your task</label>
             <input
                 id="task"
                 type="text"
                 placeholder="Get milk"
                 value={taskInput}
                 onChange={(e) => setTaskInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Escape') setAdding(false); }}
                 autoFocus
             />
+            <button type="submit" className="primary">Add</button>
             <button type="button" onClick={() => setAdding(false)}>Cancel</button>
         </form>
     ) : (
