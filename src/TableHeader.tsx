@@ -2,6 +2,7 @@ type TableHeaderProps = {
     sortDirection?: 'asc' | 'desc';
     onToggleSort?: () => void;
 }
+
 function TableHeader({ sortDirection, onToggleSort }: TableHeaderProps) {
     const headers = [
         'Task',
@@ -32,7 +33,6 @@ function TableHeader({ sortDirection, onToggleSort }: TableHeaderProps) {
                             </th>
                         )
                     }
-
                     return <th key={caption}>{caption}</th>
                 })}
             </tr>
