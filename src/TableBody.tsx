@@ -1,4 +1,4 @@
-import type { TodoItem, Value } from './types.ts'
+import type { Effort, TodoItem, Value } from './types.ts'
 import ValueCell from './ValueCell.tsx'
 import EffortCell from './EffortCell.tsx'
 import EditableTextCell from './EditableTextCell.tsx'
@@ -9,11 +9,53 @@ type TodoRowProps = {
     item: TodoItem;
     onUpdateTodo: (id: string, patch: Partial<TodoItem>) => void;
 }
-const Priority = (value: Value, urgency: Value): number => {
+const Priority = (value: Value, duedate: string, effort: Effort): number => {
     const valueNumeric = Number(value);
-    const urgencyNumeric = Number(urgency);
+    const urgencyNumeric = Urgency(duedate, effort); // Highest urgency is loest number (and negatives are overdue)
+    console.log("Calculating priority for value:", valueNumeric, "and urgency:", urgencyNumeric);
+    return valueNumeric * -urgencyNumeric;
+}
+const DaysLeft = (duedate: string) => { // shitty algorithm
+    const convertedTimestamp = new Date(duedate).getTime();
+    console.log("Converted timestamp for duedate", duedate, "is", convertedTimestamp);
+    if (isNaN(convertedTimestamp)) {
+        return null; // Invalid date
+    }
 
-    return Math.floor((valueNumeric * 2 + urgencyNumeric) / 15 * 100)
+    const currentTimestamp = new Date().getTime();
+    const millisecondsInADay = 24 * 60 * 60 * 1000;
+
+    const differenceInMilliseconds = convertedTimestamp - currentTimestamp;
+    const differenceInDays = Math.ceil(differenceInMilliseconds / millisecondsInADay);
+
+    return differenceInDays;
+}   
+
+const EffortInDays = (effort: Effort) => {
+    switch (effort) {
+        case 'MINUTES':
+            return 1;
+        case 'HOURS':
+            return 1;
+        case 'DAYS':
+            return 3;
+        case 'WEEKS':
+            return 3*7;
+        case 'MONTHS':
+            return 3*30;
+        default:
+            return 3;
+    }
+}
+
+const Urgency = (duedate: string, effort: Effort): number => {
+    const daysLeft = DaysLeft(duedate);
+    if (daysLeft === null) {
+        return 180; // Default urgency for invalid dates
+    }
+    const effortInDays = EffortInDays(effort);
+    console.log("Calculating urgency for days left:", daysLeft, "and effort in days:", effortInDays);
+    return daysLeft - effortInDays;
 }
 
 function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
@@ -31,7 +73,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                     onChange={(newState) => onUpdateTodo(item.id, { state: newState })}
                 />
             </td>
-            <td>{Priority(item.value, item.urgency)}%</td>
+            <td>{Priority(item.value, item.duedate ? item.duedate : '', item.effort)}</td>
             <td>
                 <ValueCell
                     value={item.value}
@@ -39,10 +81,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                 />
             </td>
             <td>
-                <ValueCell
-                    value={item.urgency}
-                    onChange={(newUrgency) => onUpdateTodo(item.id, { urgency: newUrgency })}
-                />
+                { Urgency(item.duedate ? item.duedate : '', item.effort) }
             </td>
             <td>
                 <EffortCell
