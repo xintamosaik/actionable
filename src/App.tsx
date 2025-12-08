@@ -5,17 +5,21 @@ import type { TodoItem, State } from './types.ts'
 
 import TaskAddForm from './TaskAddForm.tsx'
 import TodoTable from './TodoTable.tsx'
+
 type Filter = 'ALL' | State
+
 const FILTERS: { id: Filter; label: string }[] = [
   { id: 'IN_PROGRESS', label: 'In progress' },
   { id: 'WAITING', label: 'Waiting' },
   { id: 'DONE', label: 'Done' },
   { id: 'ALL', label: 'All' },
 ]
+
 function filterTodos(todos: TodoItem[], filter: Filter): TodoItem[] {
   if (filter === 'ALL') return todos
   return todos.filter(todo => todo.state === filter)
 }
+
 function countByFilter(todos: TodoItem[]): Record<Filter, number> {
   const counts: Record<Filter, number> = {
     ALL: todos.length,
@@ -31,9 +35,7 @@ function countByFilter(todos: TodoItem[]): Record<Filter, number> {
   return counts
 }
 
-
 function App() {
-
   const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
   const [more, setMore] = useState(false);
   const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
