@@ -16,7 +16,7 @@ table tbody tr td:last-child {
 } 
 button {
   cursor: pointer;
-  min-width: 50px;
+  min-width: 10ch;
   margin: 1ch 0;
   padding: 1ch;
   border: none;

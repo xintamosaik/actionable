@@ -39,10 +39,11 @@ function App() {
   const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
   const [more, setMore] = useState(false);
   const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
+  const [showDeleteDialog, setShowDeleteDialog] = useState<Boolean>(false);
   const counts = countByFilter(todos)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  
+
   const updateTodo = useCallback(
     (id: string, patch: Partial<TodoItem>) => {
       setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, ...patch } : todo)));
@@ -79,7 +80,7 @@ function App() {
         try {
           const content = e.target?.result as string
           const importedTodos: TodoItem[] = JSON.parse(content)
-          
+
           setTodos(importedTodos)
         } catch (error) {
           console.error('Error parsing JSON:', error)
@@ -124,7 +125,7 @@ function App() {
             <button className="secondary" type="button" onClick={handleExport}>
               Export
             </button>
-            <button className="secondary" type="button" onClick={handleClearAll}>
+            <button className="secondary" type="button" onClick={() => setShowDeleteDialog(!showDeleteDialog)}>
               Clear All
             </button>
           </>
@@ -138,7 +139,19 @@ function App() {
           style={{ display: 'none' }}
           onChange={handleFileChange}
         />
+        {showDeleteDialog && (
+          <div style={{ position: 'relative' }}>
+            <div className="popup" style={{ boxSizing: 'content-box'}}>
+              <p>Really?</p>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1ch' }}>
+                <button className="secondary" onClick={() => setShowDeleteDialog(false)}>Cancel</button>
+                <button className="danger" onClick={() => { handleClearAll(); setShowDeleteDialog(false); }}>Delete All</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
       <div>
         <TodoTable todos={filteredTodos} onUpdateTodo={updateTodo} />
       </div>
