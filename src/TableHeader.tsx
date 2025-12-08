@@ -19,7 +19,7 @@ function TableHeader({ sortDirection, onToggleSort }: TableHeaderProps) {
         <thead>
             <tr>
                 {headers.map((caption) => {
-                    if (caption === 'Value') {
+                    if (caption === 'Priority') {
                         return (
                             <th
                                 key={caption}

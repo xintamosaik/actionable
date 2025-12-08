@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react'
 import TableHeader from './TableHeader.tsx'
 import TableBody from './TableBody.tsx'
 
+import { calcRatio, calcUrgency, priority } from './utils.ts'
+
 import type { TodoItem } from './types.ts'
 type TodoTableProps = {
     todos: TodoItem[];
@@ -9,13 +11,17 @@ type TodoTableProps = {
 }
 
 function compareByValueThenUrgency(a: TodoItem, b: TodoItem, direction: 'asc' | 'desc') {
-  const va = Number(a.value)
-  const vb = Number(b.value)
-  if (va !== vb) return direction === 'asc' ? va - vb : vb - va
 
-  const ua = Number(a.urgency)
-  const ub = Number(b.urgency)
-  return direction === 'asc' ? ua - ub : ub - ua
+    const ua = calcUrgency(calcRatio(a.duedate, a.effort))
+    const pa = priority(a.value, ua)
+
+    const ub = calcUrgency(calcRatio(b.duedate, b.effort))
+    const pb = priority(b.value, ub)
+
+    if (pa === pb) {
+        return direction === 'asc' ? ua - ub : ub - ua;
+    }
+    return direction === 'asc' ? pa - pb : pb - pa;
 }
 
 function TodoTable({ todos, onUpdateTodo }: TodoTableProps) {
