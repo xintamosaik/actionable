@@ -18,46 +18,43 @@ const priority = (value: Value, urgency: Value): number => {
     return priorityScore;
 }
 
-const daysLeft = (duedate: string) => { // shitty algorithm
-    if (!duedate) return null // explicitly "no deadline"
+const calcDaysLeft = (duedate: string | undefined) => { // shitty algorithm
+    if (!duedate) return null
+
     const convertedTimestamp = new Date(duedate).getTime()
     if (Number.isNaN(convertedTimestamp)) return null
 
     const currentTimestamp = new Date().getTime();
     const millisecondsInADay = 24 * 60 * 60 * 1000;
-
     const differenceInMilliseconds = convertedTimestamp - currentTimestamp;
-    const differenceInDays = Math.ceil(differenceInMilliseconds / millisecondsInADay);
 
-    return differenceInDays;
+    return Math.ceil(differenceInMilliseconds / millisecondsInADay);
 }
 
 const effortInDays = {
-    MINUTES: 0,
+    MINUTES: 1,
     HOURS: 1,
     DAYS: 3,
     WEEKS: 21,
     MONTHS: 90
 }
 
-const ratio = (duedate: string, effort: Effort): number => {
-    const left = daysLeft(duedate) ?? DEFAULT_TIME_PRESSURE;
+const calcRatio = (duedate: string | undefined, effort: Effort): number => {
+    const left = calcDaysLeft(duedate) ?? DEFAULT_TIME_PRESSURE;
     const needed = effortInDays[effort]; // this will throw an Error and that's what I want
 
-    const ratio = left / needed;
-    return ratio;
+    return  left / needed;
 }
 
-const urgency = (duedate: string, effort: Effort): Value => {
-    const r = ratio(duedate, effort);
-    if (r <= 0.25) return 5;
-    if (r <= 0.75) return 4;
-    if (r <= 1.5) return 3;
-    if (r <= 4) return 2;
+const calcUrgency = (ratio: number): Value => {
+    if (ratio <= 0.25) return 5;
+    if (ratio <= 0.75) return 4;
+    if (ratio <= 1.5) return 3;
+    if (ratio <= 4) return 2;
     return 1
 }
 
-const urgencyLabels = {
+const urgencyLabels: Record<Value, string> = {
     5: "MAX",
     4: "High",
     3: "Medium",
@@ -66,8 +63,10 @@ const urgencyLabels = {
 }
 
 function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
-    const left = daysLeft(item.duedate ? item.duedate : '');
-    const urgent = urgency(item.duedate ? item.duedate : '', item.effort);
+    const daysLeft = calcDaysLeft(item.duedate);
+    const ratio = calcRatio(item.duedate, item.effort);
+    const urgency = calcUrgency(ratio);
+
     return (
         <tr>
             <td>
@@ -82,7 +81,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                     onChange={(newState) => onUpdateTodo(item.id, { state: newState })}
                 />
             </td>
-            <td>{priority(item.value, urgent) * 4}%</td>
+            <td>{priority(item.value, urgency) * 4}%</td>
             <td>
                 <ValueCell
                     value={item.value}
@@ -90,7 +89,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                 />
             </td>
             <td>
-                {urgencyLabels[urgent]}
+                {urgencyLabels[urgency]}
             </td>
             <td>
                 <EffortCell
@@ -115,7 +114,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                     date={item.duedate ? item.duedate : ''}
                     onChange={(newDate: string) => onUpdateTodo(item.id, { duedate: newDate })}
                 ></DueCell>
-                {left ? ` ${left} days left` : ''}
+                {daysLeft !== null ? ` ${daysLeft} days left` : ''}
             </td>
             <td>
                 <EditableTextCell
