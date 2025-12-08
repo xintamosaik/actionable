@@ -2,6 +2,7 @@ import './App.css'
 import { useState, useCallback, useRef, type ChangeEvent } from 'react'
 import useLocalStorage from './Localstore.ts'
 import type { TodoItem, State } from './types.ts'
+import colors from './colors.ts'
 
 import TaskAddForm from './TaskAddForm.tsx'
 import TodoTable from './TodoTable.tsx'
@@ -114,18 +115,22 @@ function App() {
             <span style={{ padding: "1ch", backgroundColor: "Canvas", borderRadius: "42%" }}>{counts[id]}</span>
           </button>
         ))}
-        <button className="secondary" onClick={() => setMore((prev) => !prev)}>
+        <button className="secondary" style={{ backgroundColor: colors.min }} onClick={() => setMore((prev) => !prev)}>
           {more ? 'Less' : 'More'}
         </button>
         {more && (
           <>
-            <button className="secondary" type="button" onClick={handleImportClick}>
-              Import
+            <button className="secondary" type="button" onClick={() => { console.log("help or about") }} style={{ backgroundColor: colors.low }}>
+              Help
             </button>
-            <button className="secondary" type="button" onClick={handleExport}>
+            <button className="secondary" type="button" onClick={handleExport} style={{ backgroundColor: colors.normal }} >
               Export
             </button>
-            <button className="secondary" type="button" onClick={() => setShowDeleteDialog(!showDeleteDialog)}>
+            <button className="secondary" type="button" onClick={handleImportClick} style={{ backgroundColor: colors.high }}>
+              Import
+            </button>
+
+            <button className="secondary" type="button" onClick={() => setShowDeleteDialog(!showDeleteDialog)} style={{ backgroundColor: colors.max }}>
               Clear All
             </button>
           </>
@@ -141,7 +146,7 @@ function App() {
         />
         {showDeleteDialog && (
           <div style={{ position: 'relative' }}>
-            <div className="popup" style={{ boxSizing: 'content-box'}}>
+            <div className="popup" style={{ boxSizing: 'content-box' }}>
               <p>Really?</p>
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1ch' }}>
                 <button className="secondary" onClick={() => setShowDeleteDialog(false)}>Cancel</button>
