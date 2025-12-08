@@ -12,17 +12,16 @@ type TodoRowProps = {
 
 const DEFAULT_TIME_PRESSURE = 180
 
-const priority = (value: Value, duedate: string, effort: Effort): number => {
-    const valueNumeric = Number(value);
-    const urgencyNumeric = urgency(duedate, effort); // Highest urgency is loest number (and negatives are overdue)
-    return urgencyNumeric / valueNumeric;
+const priority = (value: Value, urgency: Value): number => {
+    const valueNumeric = Number(value); // will be 1-5
+    const priorityScore = valueNumeric * urgency;
+    return priorityScore;
 }
+
 const daysLeft = (duedate: string) => { // shitty algorithm
-    const convertedTimestamp = new Date(duedate).getTime();
-    console.log("Converted timestamp for duedate", duedate, "is", convertedTimestamp);
-    if (isNaN(convertedTimestamp)) {
-        return null; // Invalid date
-    }
+    if (!duedate) return null // explicitly "no deadline"
+    const convertedTimestamp = new Date(duedate).getTime()
+    if (Number.isNaN(convertedTimestamp)) return null
 
     const currentTimestamp = new Date().getTime();
     const millisecondsInADay = 24 * 60 * 60 * 1000;
@@ -33,37 +32,42 @@ const daysLeft = (duedate: string) => { // shitty algorithm
     return differenceInDays;
 }
 
-const effortInDays = (effort: Effort) => {
-    switch (effort) {
-        case 'MINUTES':
-            return 1;
-        case 'HOURS':
-            return 1;
-        case 'DAYS':
-            return 3;
-        case 'WEEKS':
-            return 21;
-        case 'MONTHS':
-            return 90;
-        default:
-            return 3;
-    }
+const effortInDays = {
+    MINUTES: 0,
+    HOURS: 1,
+    DAYS: 3,
+    WEEKS: 21,
+    MONTHS: 90
 }
 
+const ratio = (duedate: string, effort: Effort): number => {
+    const left = daysLeft(duedate) ?? DEFAULT_TIME_PRESSURE;
+    const needed = effortInDays[effort]; // this will throw an Error and that's what I want
 
-const urgency = (duedate: string, effort: Effort): number => {
-    const left = daysLeft(duedate);
+    const ratio = left / needed;
+    return ratio;
+}
 
-    const needed = effortInDays(effort);
+const urgency = (duedate: string, effort: Effort): Value => {
+    const r = ratio(duedate, effort);
+    if (r <= 0.25) return 5;
+    if (r <= 0.75) return 4;
+    if (r <= 1.5) return 3;
+    if (r <= 4) return 2;
+    return 1
+}
 
-    if (left === null) {
-        return DEFAULT_TIME_PRESSURE - needed;
-    } else {
-        return left - needed;
-    }
+const urgencyLabels = {
+    5: "MAX",
+    4: "High",
+    3: "Medium",
+    2: "Low",
+    1: "MIN"
 }
 
 function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
+    const left = daysLeft(item.duedate ? item.duedate : '');
+    const urgent = urgency(item.duedate ? item.duedate : '', item.effort);
     return (
         <tr>
             <td>
@@ -78,7 +82,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                     onChange={(newState) => onUpdateTodo(item.id, { state: newState })}
                 />
             </td>
-            <td>{priority(item.value, item.duedate ? item.duedate : '', item.effort)}</td>
+            <td>{priority(item.value, urgent) * 4}%</td>
             <td>
                 <ValueCell
                     value={item.value}
@@ -86,7 +90,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                 />
             </td>
             <td>
-                {urgency(item.duedate ? item.duedate : '', item.effort)}
+                {urgencyLabels[urgent]}
             </td>
             <td>
                 <EffortCell
@@ -111,6 +115,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                     date={item.duedate ? item.duedate : ''}
                     onChange={(newDate: string) => onUpdateTodo(item.id, { duedate: newDate })}
                 ></DueCell>
+                {left ? ` ${left} days left` : ''}
             </td>
             <td>
                 <EditableTextCell
