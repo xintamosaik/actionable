@@ -12,11 +12,7 @@ type TodoRowProps = {
 
 const DEFAULT_TIME_PRESSURE = 180
 
-const priority = (value: Value, urgency: Value): number => {
-    const valueNumeric = Number(value); // will be 1-5
-    const priorityScore = valueNumeric * urgency;
-    return priorityScore;
-}
+const priority = (value: Value, urgency: Value): number => Number(value) * urgency;
 
 const calcDaysLeft = (duedate: string | undefined) => { // shitty algorithm
     if (!duedate) return null
@@ -41,9 +37,8 @@ const effortInDays = {
 
 const calcRatio = (duedate: string | undefined, effort: Effort): number => {
     const left = calcDaysLeft(duedate) ?? DEFAULT_TIME_PRESSURE;
-    const needed = effortInDays[effort]; // this will throw an Error and that's what I want
 
-    return  left / needed;
+    return left / effortInDays[effort];;
 }
 
 const calcUrgency = (ratio: number): Value => {
@@ -81,7 +76,11 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                     onChange={(newState) => onUpdateTodo(item.id, { state: newState })}
                 />
             </td>
-            <td>{priority(item.value, urgency) * 4}%</td>
+            <td>
+                <span style={{ fontWeight: item.state === 'DONE' ? 'lighter' : 'bold', color: item.state === 'DONE' ? 'gray' : 'CanvasText' }}>
+                    {priority(item.value, urgency) * 4}%
+                </span>
+            </td>
             <td>
                 <ValueCell
                     value={item.value}
@@ -89,7 +88,9 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                 />
             </td>
             <td>
-                {urgencyLabels[urgency]}
+                <span style={{ fontWeight: item.state === 'DONE' ? 'lighter' : 'bold', color: item.state === 'DONE' ? 'gray' : 'CanvasText' }}>
+                    {urgencyLabels[urgency]}
+                </span>
             </td>
             <td>
                 <EffortCell
@@ -114,7 +115,9 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                     date={item.duedate ? item.duedate : ''}
                     onChange={(newDate: string) => onUpdateTodo(item.id, { duedate: newDate })}
                 ></DueCell>
-                {daysLeft !== null ? ` ${daysLeft} days left` : ''}
+                <span style={{ fontWeight: item.state === 'DONE' ? 'lighter' : 'bold', color: item.state === 'DONE' ? 'gray' : 'CanvasText', marginLeft: '1ch' }}>
+                    {daysLeft !== null ? ` ${daysLeft} days left` : ''}
+                </span>
             </td>
             <td>
                 <EditableTextCell
