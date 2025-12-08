@@ -31,7 +31,21 @@ function countByFilter(todos: TodoItem[]): Record<Filter, number> {
   return counts
 }
 
-function exportTodos(todos: TodoItem[]) {
+
+function App() {
+
+  const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
+  const [more, setMore] = useState(false);
+  const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
+  const counts = countByFilter(todos)
+  const updateTodo = useCallback(
+    (id: string, patch: Partial<TodoItem>) => {
+      setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, ...patch } : todo)));
+    },
+    [setTodos]
+  );
+  const filteredTodos = filterTodos(todos, filter);
+  function exportTodos(todos: TodoItem[]) {
   const downloadAnchorNode = document.createElement('a');
   downloadAnchorNode.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(todos, null, 2)));
   downloadAnchorNode.setAttribute("download", "todos.json");
@@ -66,20 +80,6 @@ function importTodos(uploadFn: (todos: TodoItem[]) => void) {
   input.click();
 
 }
-function App() {
-
-  const [todos, setTodos] = useLocalStorage<TodoItem[]>('todox.todos', []);
-  const [more, setMore] = useState(false);
-  const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
-  const counts = countByFilter(todos)
-  const updateTodo = useCallback(
-    (id: string, patch: Partial<TodoItem>) => {
-      setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, ...patch } : todo)));
-    },
-    [setTodos]
-  );
-  const filteredTodos = filterTodos(todos, filter);
-
   return (
     <>
       <div style={{ display: 'flex', gap: '1ch', marginBottom: '1em' }}>
