@@ -1,3 +1,4 @@
+export type ID = string;
 export type Duedate = string;
 export type Person = string;
 export type Priority = 1 | 2 | 3 | 4 | 5;
@@ -16,4 +17,5 @@ export type TodoItem = {
   state: State;
   duedate?: Duedate;
   notes?: string;
+  dependencies?: ID[];
 }

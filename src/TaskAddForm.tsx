@@ -16,10 +16,11 @@ function TaskAddForm({ onAdd }: { onAdd: (todo: TodoItem) => void }) {
             value: 3,
             urgency: 3,
             effort: 'MINUTES',
-            responsible: 'unassigned',
+            responsible: 'Unassigned',
             state: 'WAITING',
             duedate: undefined,
             notes: '',
+            dependencies: [],
         };
 
         onAdd(newTodo);
