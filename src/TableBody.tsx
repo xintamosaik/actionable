@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { TodoItem } from './types.ts'
 import ValueCell from './ValueCell.tsx'
 import EffortCell from './EffortCell.tsx'
@@ -18,6 +19,31 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
     const ratio = calcRatio(item.duedate, item.effort);
     const urgency = calcUrgency(ratio);
 
+    const [showNoteEditor, setShowNoteEditor] = useState(false);
+
+    function handleClickOnNote() {
+        showNoteEditor ? setShowNoteEditor(false) : setShowNoteEditor(true);
+    }
+
+    if (showNoteEditor) {
+        return (
+            <tr>
+                <td colSpan={10}>
+                    <h1 style={{ marginBottom: '0.5em' }}>Edit Notes</h1>
+                    <h2>Task: {item.task}</h2>
+             
+                    <textarea
+                        autoFocus
+                        style={{ width: '100%', height: '100px' }}
+                        value={item.notes}
+                        onChange={(e) => onUpdateTodo(item.id, { notes: e.target.value })}
+                        onBlur={() => setShowNoteEditor(false)}
+                    />
+                </td>
+            </tr>
+        );
+    }
+        
     return (
         <tr>
             <td>
@@ -76,10 +102,9 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                 </span>
             </td>
             <td>
-                <EditableTextCell
-                    value={item.notes ? item.notes : ''}
-                    onChange={(newName: string) => onUpdateTodo(item.id, { notes: newName })}
-                />
+                <div onClick={handleClickOnNote} style={{ cursor: 'pointer', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+                    {item.notes ? item.notes : <span style={{ fontStyle: 'italic', color: 'gray' }}>Add notes...</span>}
+                </div> 
             </td>
         </tr>
     );
