@@ -35,16 +35,6 @@ table tbody tr td:last-child {
   padding-right: 0;
 }
 
-button {
-  cursor: pointer;
-  min-width: 10ch;
-  margin: 1ch 0;
-  padding: 1ch;
-  border: none;
-  border-radius: 5px;
-  font-weight: 900;
-}
-
 input[type="date"],
 input[type="text"] {
   min-width: 10ch;
@@ -54,15 +44,27 @@ input[type="text"] {
   font-weight: 900;
 }
 
-button.primary {
-  background-color: var(--color-green);
+button {
+  cursor: pointer;
+  margin: 1ch 0;
+  padding: 1ch;
+  border: none;
+  border-radius: 5px;
+  font-weight: 900;
 }
 
 button:hover {
   filter: brightness(120%);
 }
 
+button.primary {
+  min-width: 10ch;
+  background-color: var(--color-green);
+}
+
+
 button.secondary {
+  min-width: 10ch;
   background-color: var(--color-blue);
 }
 
