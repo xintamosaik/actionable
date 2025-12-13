@@ -1,34 +1,20 @@
-:root {
-  --dark-color-red: #7a1414;
-  --dark-color-yellow: #695710;
-  --dark-color-green: #106f10;
-  --dark-color-orange: #624314;
-  --dark-color-blue: #122869;
-
-  --light-color-red: #eb6161;
-  --light-color-yellow: #e8c13f;
-  --light-color-green: #7ae47a;
-  --light-color-orange: #e38b4c;
-  --light-color-blue: #617fe3;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
-    --color-red: var(--light-color-red);
-    --color-yellow: var(--light-color-yellow);
-    --color-green: var(--light-color-green);
-    --color-orange: var(--light-color-orange);
-    --color-blue: var(--light-color-blue);
+    --color-red: #eb6161;
+    --color-yellow: #e8c13f;
+    --color-green: #7ae47a;
+    --color-orange: #e38b4c;
+    --color-blue: #617fe3;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-red: var(--dark-color-red);
-    --color-yellow: var(--dark-color-yellow);
-    --color-green: var(--dark-color-green);
-    --color-orange: var(--dark-color-orange);
-    --color-blue: var(--dark-color-blue);
+    --color-red: #7e0b0b;
+    --color-yellow: #798200;
+    --color-green: #077807;
+    --color-orange: #88430a;
+    --color-blue: #0c2a84;
   }
 }
 
