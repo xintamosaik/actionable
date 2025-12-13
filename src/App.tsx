@@ -41,6 +41,7 @@ function App() {
   const [more, setMore] = useState(false);
   const [filter, setFilter] = useState<Filter>('IN_PROGRESS');
   const [showDeleteDialog, setShowDeleteDialog] = useState<Boolean>(false);
+  const [showDetailView, setShowDetailView] = useState<Boolean>(false);
   const counts = countByFilter(todos)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -156,10 +157,15 @@ function App() {
           </div>
         )}
       </div>
-
+      { showDetailView ? (
+        <div>
+          <p>Detail View Placeholder</p>
+        </div>
+      ) : 
       <div>
         <TodoTable todos={filteredTodos} onUpdateTodo={updateTodo} />
       </div>
+      }
     </>
   )
 }
