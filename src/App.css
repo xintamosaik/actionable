@@ -14,8 +14,6 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --color-bg-primary: var(--light-color-bg-primary);
-    --color-bg-secondary: var(--light-color-bg-secondary);
     --color-red: var(--light-color-red);
     --color-yellow: var(--light-color-yellow);
     --color-green: var(--light-color-green);
@@ -26,8 +24,6 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg-primary: var(--dark-color-bg-primary);
-    --color-bg-secondary: var(--dark-color-bg-secondary);
     --color-red: var(--dark-color-red);
     --color-yellow: var(--dark-color-yellow);
     --color-green: var(--dark-color-green);
