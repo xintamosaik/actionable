@@ -9,26 +9,6 @@ import StateCell from './StateCell.tsx'
 
 import { calcDaysLeft, calcRatio, calcUrgency, urgencyLabels, priority } from './utils.ts'
 
-function AddTaskAsDependency() {
-    const [showAddDependencyInput, setShowAddDependencyInput] = useState(false);
-    return (
-        <tr>
-            <td colSpan={10}>
-                {showAddDependencyInput ? (
-                    <div>
-                        <input type="text" autoFocus />
-                        { // I AM FUMBLING OVER THIS
-                        }
-                    </div>
-                ) : (
-                    <button className="primary" onClick={() => setShowAddDependencyInput((v) => !v)}>
-                        + Add Dependency
-                    </button>
-                )}
-            </td>
-        </tr>
-    )
-}
 type DependenciesProps = {
     todos: TodoItem[];
     id: ID;
@@ -46,20 +26,16 @@ function Dependencies({ todos, id, onUpdateTodo }: DependenciesProps) {
     };
     return (
         <>
-
-            <AddTaskAsDependency />
             <tr>
                 <td colSpan={10}>
                     <h2>Dependencies</h2>
-
                 </td>
             </tr>
-            {item?.dependencies?.length && item.dependencies.map((dependency) =>
-                <tr><td colSpan={10}><span key={dependency}>{todos.map(todo => todo.id === dependency && todo.task)}</span></td></tr>
-            )}
+            {item?.dependencies?.length && item.dependencies.map((dependency) => TodoRow({ todos, id: dependency, onUpdateTodo }))}
+
             <tr>
                 <td colSpan={10}>
-                    <div style={{display: "flex", gap: "1ch"}}>
+                    <div style={{ display: "flex", gap: "1ch" }}>
                         <select
                             id="availableDependencies"
                             value={selectedDependency}
