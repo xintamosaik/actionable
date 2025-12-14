@@ -36,6 +36,7 @@ table tbody tr td:last-child {
 }
 
 input[type="date"],
+select,
 input[type="text"] {
   min-width: 10ch;
   padding: 0.85ch;

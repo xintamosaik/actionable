@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { TodoItem } from './types.ts'
+import type { ID, TodoItem } from './types.ts'
 
 import ValueCell from './ValueCell.tsx'
 import EffortCell from './EffortCell.tsx'
@@ -9,6 +9,75 @@ import StateCell from './StateCell.tsx'
 
 import { calcDaysLeft, calcRatio, calcUrgency, urgencyLabels, priority } from './utils.ts'
 
+function AddTaskAsDependency() {
+    const [showAddDependencyInput, setShowAddDependencyInput] = useState(false);
+    return (
+        <tr>
+            <td colSpan={10}>
+                {showAddDependencyInput ? (
+                    <div>
+                        <input type="text" autoFocus />
+                        { // I AM FUMBLING OVER THIS
+                        }
+                    </div>
+                ) : (
+                    <button className="primary" onClick={() => setShowAddDependencyInput((v) => !v)}>
+                        + Add Dependency
+                    </button>
+                )}
+            </td>
+        </tr>
+    )
+}
+type DependenciesProps = {
+    todos: TodoItem[];
+    id: ID;
+    onUpdateTodo: (id: string, patch: Partial<TodoItem>) => void;
+}
+function Dependencies({ todos, id, onUpdateTodo }: DependenciesProps) {
+    const item = todos.find((todo) => todo.id === id);
+    const [selectedDependency, setSelectedDependency] = useState('');
+
+    const handleConnectClick = () => {
+        const selectedTodo = todos.find((todo) => todo.task === selectedDependency);
+        if (selectedTodo && item) {
+            onUpdateTodo(item.id, { dependencies: [...(item.dependencies || []), selectedTodo.id] });
+        }
+    };
+    return (
+        <>
+
+            <AddTaskAsDependency />
+            <tr>
+                <td colSpan={10}>
+                    <h2>Dependencies</h2>
+
+                </td>
+            </tr>
+            {item?.dependencies?.length && item.dependencies.map((dependency) =>
+                <tr><td colSpan={10}><span key={dependency}>{todos.map(todo => todo.id === dependency && todo.task)}</span></td></tr>
+            )}
+            <tr>
+                <td colSpan={10}>
+                    <div style={{display: "flex", gap: "1ch"}}>
+                        <select
+                            id="availableDependencies"
+                            value={selectedDependency}
+                            onChange={(e) => setSelectedDependency(e.target.value)}
+                        >
+                            {todos.map((todo) => (
+                                <option key={todo.id} value={todo.task}>
+                                    {todo.task}
+                                </option>
+                            ))}
+                        </select>
+                        <button onClick={handleConnectClick}>Connect</button>
+                    </div>
+                </td>
+            </tr>
+        </>
+    )
+}
 type PlusButtonProps = {
     show: Boolean;
     onClick: () => void;
@@ -28,11 +97,16 @@ function PlusButton({ show, onClick }: PlusButtonProps) {
 }
 
 type TodoRowProps = {
-    item: TodoItem;
+    todos: TodoItem[];
+    id: ID;
     onUpdateTodo: (id: string, patch: Partial<TodoItem>) => void;
 }
 
-function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
+function TodoRow({ todos, id, onUpdateTodo }: TodoRowProps) {
+
+    const item = todos.find((todo) => todo.id === id);
+    if (!item) return <><tr></tr></>
+
     const daysLeft = calcDaysLeft(item.duedate);
     const ratio = calcRatio(item.duedate, item.effort);
     const urgency = calcUrgency(ratio);
@@ -43,7 +117,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
     }
 
     const [showDependencies, setShowDependencies] = useState(false);
-    const [showAddDependencyInput, setShowAddDependencyInput] = useState(false);
+
 
     if (showNoteEditor) {
         return (
@@ -130,28 +204,7 @@ function TodoRow({ item, onUpdateTodo }: TodoRowProps) {
                 </td>
             </tr>
             {showDependencies && (
-                <>
-                    <tr>
-                        <td colSpan={10}>
-                            <h2>Dependencies</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={10}>
-                            {showAddDependencyInput ? (
-                                <div>
-                                    <input type="text" autoFocus />
-                                    { // I AM FUMBLING OVER THIS
-                                    }
-                                </div>
-                            ) : (
-                                <button className="primary" onClick={() => setShowAddDependencyInput((v) => !v)}>
-                                    + Add Dependency
-                                </button>
-                            )}
-                        </td>
-                    </tr>
-                </>
+                <Dependencies id={id} todos={todos} onUpdateTodo={onUpdateTodo} />
             )}
 
         </>
@@ -162,7 +215,7 @@ function TableBody({ todos, onUpdateTodo }: { todos: TodoItem[]; onUpdateTodo: (
     return (
         <tbody>
             {todos.map((item) => (
-                <TodoRow key={item.id} item={item} onUpdateTodo={onUpdateTodo} />
+                <TodoRow key={item.id} todos={todos} id={item.id} onUpdateTodo={onUpdateTodo} />
             ))}
         </tbody>
     )
