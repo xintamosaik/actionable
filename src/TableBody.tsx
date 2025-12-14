@@ -71,7 +71,7 @@ function Dependencies({ todos, id, onUpdateTodo }: DependenciesProps) {
                                 </option>
                             ))}
                         </select>
-                        <button onClick={handleConnectClick}>Connect</button>
+                        <button className="primary" onClick={handleConnectClick}>Connect</button>
                     </div>
                 </td>
             </tr>
